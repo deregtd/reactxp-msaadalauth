@@ -1,15 +1,24 @@
 /**
-* index.web.ts
-* Copyright: Microsoft 2018
-*
-* web-specific implementation of the hellojs abstraction.
-*/
+ * index.web.ts
+ * Copyright: Microsoft 2018
+ *
+ * web-specific implementation of the hellojs abstraction.
+ */
 
-import _ = require('lodash');
-import SyncTasks = require('synctasks');
+import * as SyncTasks from 'synctasks';
+import each from 'lodash/each';
+import extend from 'lodash/extend';
+import map from 'lodash/map';
 
-import { AccessTokenRefreshResult, AppConfig, AuthHelperCommon, MsaAuthorizeUrl, MsaLogoutUrl,
-    UserLoginResult } from './Common';
+import {
+    AccessTokenRefreshResult,
+    AppConfig,
+    AuthHelperCommon,
+    Dictionary,
+    MsaAuthorizeUrl,
+    MsaLogoutUrl,
+    UserLoginResult
+} from './Common';
 
 const LocalStoragePendingLoginKey = 'msaLoginPending';
 
@@ -22,8 +31,8 @@ export class MsaHelper implements AuthHelperCommon {
         // Don't immediately init unless we were pending a login, since it might eat the AAD login attempt.
         if (pending === '1') {
             if (window.location.hash) {
-                let parsedParts: _.Dictionary<string> = {};
-                _.each(window.location.hash.substr(1).split('&'), p => {
+                let parsedParts: Dictionary<string> = {};
+                each(window.location.hash.substr(1).split('&'), p => {
                     const bits = p.split('=');
                     parsedParts[bits[0]] = bits[1] ? decodeURIComponent(bits[1]) : '';
                 });
@@ -74,7 +83,7 @@ export class MsaHelper implements AuthHelperCommon {
     loginNewUser(scopes: string[], usernameHint?: string): SyncTasks.Promise<UserLoginResult> {
         window.localStorage.setItem(LocalStoragePendingLoginKey, '1');
 
-        let extraParams: _.Dictionary<string> = { prompt: 'login' };
+        let extraParams: Dictionary<string> = { prompt: 'login' };
         if (usernameHint) {
             extraParams['login_hint'] = usernameHint;
         }
@@ -83,8 +92,8 @@ export class MsaHelper implements AuthHelperCommon {
         return SyncTasks.Defer().promise();
     }
 
-    private _formMSALoginUrl(scopes: string[], extraParams?: _.Dictionary<string>) {
-        let params: _.Dictionary<string> = _.extend({
+    private _formMSALoginUrl(scopes: string[], extraParams?: Dictionary<string>) {
+        let params: Dictionary<string> = extend({
             'response_type': 'token',
             'scope': scopes.join(' '),
             'redirect_uri': this._appConfig.redirectUri,
@@ -93,11 +102,11 @@ export class MsaHelper implements AuthHelperCommon {
         }, extraParams);
 
         return MsaAuthorizeUrl + '?' +
-            _.map(params, (v, k) => k + '=' + encodeURIComponent(v)).join('&');
+            map(params, (v, k) => k + '=' + encodeURIComponent(v)).join('&');
     }
 
     private _formMSALogoutUrl(loginHint?: string) {
-        let params: _.Dictionary<string> = {
+        let params: Dictionary<string> = {
             'redirect_uri': window.location.origin,
             'client_id': this._appConfig.clientId,
         };
@@ -107,7 +116,7 @@ export class MsaHelper implements AuthHelperCommon {
         }
 
         return MsaLogoutUrl + '?' +
-            _.map(params, (v, k) => k + '=' + encodeURIComponent(v)).join('&');
+            map(params, (v, k) => k + '=' + encodeURIComponent(v)).join('&');
     }
 
     logoutUser(userIdentifier: string, userName: string): SyncTasks.Promise<void> {

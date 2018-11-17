@@ -15,7 +15,6 @@ install:
   - npm i
 
 script:
-  - npm run test
   - npm run build
 
 cache:

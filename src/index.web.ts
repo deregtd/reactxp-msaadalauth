@@ -1,16 +1,16 @@
 /**
-* index.web.tsx
-* Copyright: Microsoft 2018
-*
-* Web impl of AuthBase.
-*/
+ * index.web.tsx
+ * Copyright: Microsoft 2018
+ *
+ * Web impl of AuthBase.
+ */
 
-import SyncTasks = require('synctasks');
+import * as SyncTasks from 'synctasks';
 
-import Adal = require('./adal.web');
+import { AdalHelper } from './adal.web';
 import { AuthBase } from './AuthBase';
 import { AppConfig, UnifiedError, UnifiedErrorType, UserAccessToken, UserLoginResult } from './Common';
-import Msa = require('./msa.web');
+import { MsaHelper } from './msa.web';
 
 export { AppConfig, UnifiedError, UnifiedErrorType, UserAccessToken, UserLoginResult };
 
@@ -20,10 +20,11 @@ export default class AuthWeb extends AuthBase {
         super(possibleLoginCallback);
 
         if (msaConfig) {
-            this._msa = new Msa.MsaHelper(msaConfig);
+            this._msa = new MsaHelper(msaConfig);
         }
+
         if (adalConfig) {
-            this._adal = new Adal.AdalHelper(adalConfig);
+            this._adal = new AdalHelper(adalConfig);
         }
     }
 }

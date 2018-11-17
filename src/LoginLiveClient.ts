@@ -1,12 +1,12 @@
 /**
-* LoginLiveClient.ts
-* Copyright: Microsoft 2018
-*
-* Helper client for login.live.com REST API
-*/
+ * LoginLiveClient.ts
+ * Copyright: Microsoft 2018
+ *
+ * Helper client for login.live.com REST API
+ */
 
+import * as SyncTasks from 'synctasks';
 import { ApiCallOptions, GenericRestClient, WebRequestPriority } from 'simplerestclients';
-import SyncTasks = require('synctasks');
 
 export interface LoginResponseParams {
     access_token: string;
@@ -30,11 +30,11 @@ class LoginLiveClient extends GenericRestClient {
             '&grant_type=refresh_token';
 
         const options: ApiCallOptions = {
-                contentType: 'form',
-                retries: 5,
-                timeout: 300000, // 5 min timeout
-                priority: WebRequestPriority.Critical
-            };
+            contentType: 'form',
+            retries: 5,
+            timeout: 300000, // 5 min timeout
+            priority: WebRequestPriority.Critical
+        };
 
         return this.performApiPost('oauth20_token.srf', params, options);
     }
