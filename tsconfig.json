@@ -1,0 +1,33 @@
+{
+    "compilerOptions": {
+        "noEmitHelpers": true,
+        "importHelpers": true,
+        "declaration": true,
+        "noResolve": false,
+        "jsx": "react",
+        "reactNamespace": "RX",
+        "module": "commonjs",
+        "target": "es5",
+        "experimentalDecorators": true,
+        "sourceMap": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "outDir": "./dist/",
+        "baseUrl": ".",
+        "typeRoots": [
+            "./node_modules/@types"
+        ],
+    },
+
+    "include": [
+        "src/**/*"
+    ],
+
+    "exclude": [
+        "dist",
+        "node_modules"
+    ]
+}
