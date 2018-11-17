@@ -1,12 +1,12 @@
 /**
-* AuthBase.tsx
-* Copyright: Microsoft 2018
-*
-* Common base class for the web/native abstractions to deal with logging in, getting tokens, etc.
-*/
+ * AuthBase.tsx
+ * Copyright: Microsoft 2018
+ *
+ * Common base class for the web/native abstractions to deal with logging in, getting tokens, etc.
+ */
 
-import _ = require('lodash');
 import * as SyncTasks from 'synctasks';
+import compact from 'lodash/compact';
 
 import { AccessTokenRefreshResult, AuthHelperCommon, UnifiedError, UnifiedErrorType, UserLoginResult } from './Common';
 
@@ -80,7 +80,7 @@ export abstract class AuthBase {
     private _processLoginResult(result: UserLoginResult, msaScopes: string[], adalResourceId: string|undefined)
             : SyncTasks.Promise<void> {
         if (result.switchToAadUsername) {
-            return this._aadLogin(_.compact([adalResourceId]), result.switchToAadUsername);
+            return this._aadLogin(compact([adalResourceId]), result.switchToAadUsername);
         }
 
         if (result.switchToMsaUsername) {
@@ -88,17 +88,17 @@ export abstract class AuthBase {
         }
 
         return SyncTasks.Resolved()
-        .then(() => this._possibleLoginCallback(result))
-        .then(() => {
-            // Wait until the callback promise completes to clean up the weblogins, since there's a common race condition
-            // of multiple redirects during login and processing...
-            if (this._msa) {
-                this._msa.web_ackLogin();
-            }
-            if (this._adal) {
-                this._adal.web_ackLogin();
-            }
-        });
+            .then(() => this._possibleLoginCallback(result))
+            .then(() => {
+                // Wait until the callback promise completes to clean up the weblogins, since there's a common race condition
+                // of multiple redirects during login and processing...
+                if (this._msa) {
+                    this._msa.web_ackLogin();
+                }
+                if (this._adal) {
+                    this._adal.web_ackLogin();
+                }
+            });
     }
 
     getMsaAuthToken(userIdentifier: string, userEmail: string, msaScopes: string[], refreshToken?: string)
@@ -108,14 +108,14 @@ export abstract class AuthBase {
         }
 
         return this._msa.getAccessTokenForUserSilent(userIdentifier, userEmail, msaScopes, refreshToken)
-        .catch((err: UnifiedError) => {
-            // See if we need to intercept an interactive_required call.
-            if (err.unifiedType === UnifiedErrorType.InteractiveRequired) {
-                return this._msa!!!.getAccessTokenForUserInteractive(userIdentifier, userEmail, msaScopes);
-            }
+            .catch((err: UnifiedError) => {
+                // See if we need to intercept an interactive_required call.
+                if (err.unifiedType === UnifiedErrorType.InteractiveRequired) {
+                    return this._msa!!!.getAccessTokenForUserInteractive(userIdentifier, userEmail, msaScopes);
+                }
 
-            return SyncTasks.Rejected(err);
-        });
+                return SyncTasks.Rejected(err);
+            });
     }
 
     getAdalAuthToken(userIdentifier: string, userEmail: string, resourceId: string, refreshToken?: string)
@@ -125,14 +125,14 @@ export abstract class AuthBase {
         }
 
         return this._adal.getAccessTokenForUserSilent(userIdentifier, userEmail, [resourceId], refreshToken)
-        .catch((err: UnifiedError) => {
-            // See if we need to intercept an interactive_required call.
-            if (err.unifiedType === UnifiedErrorType.InteractiveRequired) {
-                return this._adal!!!.getAccessTokenForUserInteractive(userIdentifier, userEmail, [resourceId]);
-            }
+            .catch((err: UnifiedError) => {
+                // See if we need to intercept an interactive_required call.
+                if (err.unifiedType === UnifiedErrorType.InteractiveRequired) {
+                    return this._adal!!!.getAccessTokenForUserInteractive(userIdentifier, userEmail, [resourceId]);
+                }
 
-            return SyncTasks.Rejected(err);
-        });
+                return SyncTasks.Rejected(err);
+            });
     }
 
     logoutMsaUser(userIdentifier: string, userEmail: string) {

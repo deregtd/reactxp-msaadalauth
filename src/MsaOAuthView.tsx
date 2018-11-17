@@ -1,15 +1,16 @@
 /*
-* MsaOAuthView.tsx
-* Copyright: Microsoft 2018
-*
-* A panel to hold an oauth handler.  Only capable of doing MSA login on web right now.
-*/
+ * MsaOAuthView.tsx
+ * Copyright: Microsoft 2018
+ *
+ * A panel to hold an oauth handler.  Only capable of doing MSA login on web right now.
+ */
 
-import _ = require('lodash');
 import * as RX from 'reactxp';
-import SyncTasks = require('synctasks');
+import * as SyncTasks from 'synctasks';
+import each from 'lodash/each';
+import map from 'lodash/map';
 
-import { MsaAuthorizeUrl, MsaLogoutUrl, UserLoginResult } from './Common';
+import { Dictionary, MsaAuthorizeUrl, MsaLogoutUrl, UserLoginResult } from './Common';
 import LoginLiveClient from './LoginLiveClient';
 
 interface MsaOAuthViewProps extends RX.CommonProps {
@@ -84,7 +85,7 @@ export default class MsaOAuthView extends RX.Component<MsaOAuthViewProps, RX.Sta
     }
 
     private _formMSALoginUrl() {
-        let params: _.Dictionary<string> = {
+        let params: Dictionary<string> = {
             'response_type': 'code',
             'scope': ['offline_access', ...this.props.scopes].join(' '),
             'redirect_uri': this.props.redirectUri,
@@ -103,11 +104,11 @@ export default class MsaOAuthView extends RX.Component<MsaOAuthViewProps, RX.Sta
         }
 
         return MsaAuthorizeUrl + '?' +
-            _.map(params, (v, k) => k + '=' + encodeURIComponent(v)).join('&');
+            map(params, (v, k) => k + '=' + encodeURIComponent(v)).join('&');
     }
 
     private _formMSALogoutUrl() {
-        let params: _.Dictionary<string> = {
+        let params: Dictionary<string> = {
             'redirect_uri': this.props.redirectUri,
             'client_id': this.props.clientId,
         };
@@ -117,7 +118,7 @@ export default class MsaOAuthView extends RX.Component<MsaOAuthViewProps, RX.Sta
         }
 
         return MsaLogoutUrl + '?' +
-            _.map(params, (v, k) => k + '=' + encodeURIComponent(v)).join('&');
+            map(params, (v, k) => k + '=' + encodeURIComponent(v)).join('&');
     }
 
     private _onLoad = (e: RX.Types.SyntheticEvent) => {
@@ -130,8 +131,8 @@ export default class MsaOAuthView extends RX.Component<MsaOAuthViewProps, RX.Sta
 
         const url = e.nativeEvent.url as string;
         if (url.substr(0, this.props.redirectUri.length) === this.props.redirectUri) {
-            let parsedParts: _.Dictionary<string> = {};
-            _.each(url.substr(this.props.redirectUri.length + 1).split('&'), p => {
+            let parsedParts: Dictionary<string> = {};
+            each(url.substr(this.props.redirectUri.length + 1).split('&'), p => {
                 const bits = p.split('=');
                 parsedParts[bits[0]] = bits[1] ? decodeURIComponent(bits[1]) : '';
             });

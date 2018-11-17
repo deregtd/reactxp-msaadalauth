@@ -1,16 +1,24 @@
 /**
-* index.web.ts
-* Copyright: Microsoft 2018
-*
-* web-specific implementation of the msal abstraction.
-*/
+ * index.web.ts
+ * Copyright: Microsoft 2018
+ *
+ * web-specific implementation of the msal abstraction.
+ */
 
-import AdalAuthenticationContext = require('adal-angular');
-import _ = require('lodash');
-import SyncTasks = require('synctasks');
+import * as SyncTasks from 'synctasks';
+import AdalAuthenticationContext from 'adal-angular';
+import compact from 'lodash/compact';
+import each from 'lodash/each';
 
-import { AccessTokenRefreshResult, AppConfig, AuthHelperCommon, UnifiedError, UnifiedErrorType,
-    UserLoginResult } from './Common';
+import {
+    AccessTokenRefreshResult,
+    AppConfig,
+    AuthHelperCommon,
+    Dictionary,
+    UnifiedError,
+    UnifiedErrorType,
+    UserLoginResult
+} from './Common';
 
 interface AdalWebProfile {
     aio?: string;
@@ -51,8 +59,9 @@ export class AdalHelper implements AuthHelperCommon {
         if (pending === '1') {
             if (window.location.search) {
                 const paramList = window.location.search.substr(1).split('&');
-                let params: _.Dictionary<string> = {};
-                _.each(paramList, p => {
+                let params: Dictionary<string> = {};
+
+                each(paramList, p => {
                     const x = p.split('=');
                     params[x[0]] = decodeURIComponent(x[1]);
                 });
@@ -102,7 +111,7 @@ export class AdalHelper implements AuthHelperCommon {
         const userInfo: UserLoginResult = {
             full: {
                 userIdentifier: info.profile.unique_name,
-                displayName: _.compact([info.profile.given_name, info.profile.family_name]).join(' '),
+                displayName: compact([info.profile.given_name, info.profile.family_name]).join(' '),
                 email: info.userName,
                 anchorMailbox: info.userName,
                 isMsa: false,

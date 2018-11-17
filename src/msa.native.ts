@@ -1,16 +1,23 @@
 /**
-* index.native.ts
-* Copyright: Microsoft 2018
-*
-* Native implementation of MSA auth, currently using the OAuthView.
-*/
+ * index.native.ts
+ * Copyright: Microsoft 2018
+ *
+ * Native implementation of MSA auth, currently using the OAuthView.
+ */
 
-import SyncTasks = require('synctasks');
+import * as SyncTasks from 'synctasks';
 
-import { AccessTokenRefreshResult, AppConfig, AuthHelperCommon, MsaNativeRedirectUrl, UnifiedError, UnifiedErrorType,
-    UserLoginResult } from './Common';
 import LoginLiveClient from './LoginLiveClient';
 import MsaOAuthView from './MsaOAuthView';
+import {
+    AccessTokenRefreshResult,
+    AppConfig,
+    AuthHelperCommon,
+    MsaNativeRedirectUrl,
+    UnifiedError,
+    UnifiedErrorType,
+    UserLoginResult
+} from './Common';
 
 export class MsaHelper implements AuthHelperCommon {
     constructor(protected _appConfig: AppConfig) {
@@ -34,12 +41,12 @@ export class MsaHelper implements AuthHelperCommon {
     loginNewUser(scopes: string[], usernameHint?: string): SyncTasks.Promise<UserLoginResult> {
         return MsaOAuthView.login(this._appConfig.clientId, this._appConfig.clientSecret!!!, MsaNativeRedirectUrl,
             scopes, usernameHint)
-        .catch(MsaHelper._errCatcher);
+            .catch(MsaHelper._errCatcher);
     }
 
     logoutUser(userIdentifier: string, userName: string): SyncTasks.Promise<void> {
         return MsaOAuthView.logout(this._appConfig.clientId, MsaNativeRedirectUrl, userName)
-        .catch(MsaHelper._errCatcher);
+            .catch(MsaHelper._errCatcher);
     }
 
     getAccessTokenForUserSilent(userIdentifier: string, userName: string, scopes: string[], refreshToken?: string|undefined)

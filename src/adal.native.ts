@@ -1,16 +1,22 @@
 /**
-* index.native.ts
-* Copyright: Microsoft 2018
-*
-* React-Native-specific implementation of the adal abstraction.
-*/
+ * index.native.ts
+ * Copyright: Microsoft 2018
+ *
+ * React-Native-specific implementation of the adal abstraction.
+ */
 
-import _ = require('lodash');
+import * as SyncTasks from 'synctasks';
+import compact from 'lodash/compact';
 import { MSAdalAuthenticationContext, MSAdalLogout } from 'react-native-ms-adal';
-import SyncTasks = require('synctasks');
 
-import { AccessTokenRefreshResult, AppConfig, AuthHelperCommon, UnifiedError, UnifiedErrorType,
-    UserLoginResult } from './Common';
+import {
+    AccessTokenRefreshResult,
+    AppConfig,
+    AuthHelperCommon,
+    UnifiedError,
+    UnifiedErrorType,
+    UserLoginResult
+} from './Common';
 
 export class AdalHelper implements AuthHelperCommon {
     private _context: MSAdalAuthenticationContext;
@@ -51,7 +57,7 @@ export class AdalHelper implements AuthHelperCommon {
             const loginResult: UserLoginResult = {
                 full: {
                     userIdentifier: fetchResult.userInfo.displayableId || fetchResult.userInfo.uniqueId,
-                    displayName: _.compact([fetchResult.userInfo.givenName, fetchResult.userInfo.familyName]).join(' '),
+                    displayName: compact([fetchResult.userInfo.givenName, fetchResult.userInfo.familyName]).join(' '),
                     email: fetchResult.userInfo.userId,
                     isMsa: false,
                     anchorMailbox: fetchResult.userInfo.userId,
@@ -70,7 +76,7 @@ export class AdalHelper implements AuthHelperCommon {
 
     logoutUser(userIdentifier: string, userName: string): SyncTasks.Promise<void> {
         return SyncTasks.fromThenable(MSAdalLogout(this._context.authority, this._redirectUri))
-        .catch(AdalHelper._errCatcher);
+            .catch(AdalHelper._errCatcher);
     }
 
     getAccessTokenForUserSilent(userIdentifier: string, userName: string, scopes: string[], refreshToken?: string|undefined)

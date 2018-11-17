@@ -1,15 +1,19 @@
 /**
-* Common.ts
-* Copyright: Microsoft 2018
-*
-* Common interfaces and functionality for msa authentication.
-*/
+ * Common.ts
+ * Copyright: Microsoft 2018
+ *
+ * Common interfaces and functionality for msa authentication.
+ */
 
-import SyncTasks = require('synctasks');
+import * as SyncTasks from 'synctasks';
 
 export const MsaNativeRedirectUrl = 'https://login.live.com/oauth20_desktop.srf';
 export const MsaAuthorizeUrl = 'https://login.live.com/oauth20_authorize.srf';
 export const MsaLogoutUrl = 'https://login.live.com/oauth20_logout.srf';
+
+export interface Dictionary<T> {
+    [key: string]: T;
+}
 
 export interface UserAccessToken {
     token: string;
