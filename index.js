@@ -5,4 +5,4 @@
 * Points at typescript source for using with webpack/TSC.
 */
 
-module.exports = require('./dist/SimpleRestClients');
+module.exports = require('./dist/index.web');
