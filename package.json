@@ -1,6 +1,6 @@
 {
   "name": "reactxp-msaadalauth",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An abstraction around ADAL plus a manual MSA implementation for unified authentication support for ReactXP apps",
   "author": "David de Regt <David.de.Regt@microsoft.com>",
   "scripts": {
@@ -33,7 +33,6 @@
     "type": "git",
     "url": "https://github.com/deregtd/reactxp-msaadalauth"
   },
-  "main": "index.js",
   "bugs": {
     "url": "https://github.com/deregtd/reactxp-msaadalauth/issues"
   },
