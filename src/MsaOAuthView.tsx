@@ -31,10 +31,6 @@ const _styles = {
         alignSelf: 'stretch',
         flexDirection: 'column',
         alignItems: 'stretch',
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
     }),
 };
 
@@ -71,16 +67,18 @@ export default class MsaOAuthView extends RX.Component<MsaOAuthViewProps, RX.Sta
 
     render(): JSX.Element | null {
         return (
-            <RX.WebView
-                style={ _styles.container }
-                url={ this.props.logout ? this._formMSALogoutUrl() : this._formMSALoginUrl() }
-                onLoad={ this._onLoad }
-                javaScriptEnabled={ true }
-                onError={ this._onWebError }
-                domStorageEnabled={ true }
-                sandbox={ 4095 }
-                startInLoadingState={ true }
-            />
+            <RX.View style={ _styles.container }>
+                <RX.WebView
+                    style={ _styles.container }
+                    url={ this.props.logout ? this._formMSALogoutUrl() : this._formMSALoginUrl() }
+                    onLoad={ this._onLoad }
+                    javaScriptEnabled={ true }
+                    onError={ this._onWebError }
+                    domStorageEnabled={ true }
+                    sandbox={ 4095 }
+                    startInLoadingState={ true }
+                />
+            </RX.View>
         );
     }
 
