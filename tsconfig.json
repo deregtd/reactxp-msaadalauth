@@ -9,7 +9,7 @@
     "importHelpers": true,
     "skipLibCheck": true,
     "declaration": true,
-    "jsxFactory": "RX",
+    "reactNamespace": "RX",
     "noResolve": false,
     "sourceMap": true,
     "module": "commonjs",
