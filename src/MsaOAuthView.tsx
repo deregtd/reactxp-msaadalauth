@@ -29,8 +29,11 @@ const _styles = {
     container: RX.Styles.createViewStyle({
         flex: 1,
         alignSelf: 'stretch',
-        flexDirection: 'column',
-        alignItems: 'stretch',
+    }),
+    padding: RX.Styles.createViewStyle({
+        margin: 32,
+        borderWidth: 2,
+        borderColor: 'black',
     }),
 };
 
@@ -67,7 +70,7 @@ export default class MsaOAuthView extends RX.Component<MsaOAuthViewProps, RX.Sta
 
     render(): JSX.Element | null {
         return (
-            <RX.View style={ _styles.container }>
+            <RX.View style={ [_styles.container, _styles.padding] }>
                 <RX.WebView
                     style={ _styles.container }
                     url={ this.props.logout ? this._formMSALogoutUrl() : this._formMSALoginUrl() }
