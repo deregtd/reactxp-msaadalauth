@@ -6,7 +6,6 @@
  */
 
 import * as SyncTasks from 'synctasks';
-import compact from 'lodash/compact';
 
 import { AccessTokenRefreshResult, AuthHelperCommon, UnifiedError, UnifiedErrorType, UserLoginResult } from './Common';
 
@@ -80,11 +79,11 @@ export abstract class AuthBase {
     private _processLoginResult(result: UserLoginResult, msaScopes: string[], adalResourceId: string|undefined)
             : SyncTasks.Promise<void> {
         if (result.switchToAadUsername) {
-            return this._aadLogin(compact([adalResourceId]), result.switchToAadUsername);
+            return this._aadLogin(msaScopes, adalResourceId, result.switchToAadUsername);
         }
 
         if (result.switchToMsaUsername) {
-            return this._msaLogin(msaScopes, result.switchToMsaUsername);
+            return this._msaLogin(msaScopes, adalResourceId, result.switchToMsaUsername);
         }
 
         return SyncTasks.Resolved()
