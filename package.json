@@ -1,6 +1,6 @@
 {
   "name": "reactxp-msaadalauth",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "An abstraction around ADAL plus a manual MSA implementation for unified authentication support for ReactXP apps",
   "author": "David de Regt <David.de.Regt@microsoft.com>",
   "scripts": {

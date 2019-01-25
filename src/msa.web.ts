@@ -53,7 +53,7 @@ export class MsaHelper implements AuthHelperCommon {
                             accessToken: {
                                 token: parsedParts['access_token'],
                                 expiresIn: Number(parsedParts['expires_in']),
-                                scopes: parsedParts['scope'].split(' '),
+                                scopes: (parsedParts['scope'] || '').split(' '),
                             }
                         }
                     };
