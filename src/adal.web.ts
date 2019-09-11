@@ -33,6 +33,7 @@ interface AdalWebProfile {
     ipaddr: string;
     iss: string;
     nonce?: string;
+    oid?: string;
     sub?: string;
     tid?: string;
     unique_name: string;
@@ -100,7 +101,7 @@ export class AdalHelper implements AuthHelperCommon {
             clientId: this._appConfig.clientId,
             cacheLocation: 'localStorage',
             popUp: false,
-            redirectUri: window.location.origin,
+            redirectUri: this._appConfig.redirectUri || window.location.origin,
             navigateToLoginRequestUrl: false,
         };
         this._context = new AdalAuthenticationContext(options);
@@ -114,6 +115,8 @@ export class AdalHelper implements AuthHelperCommon {
                 displayName: compact([info.profile.given_name, info.profile.family_name]).join(' '),
                 email: info.userName,
                 anchorMailbox: info.userName,
+                adOid: info.profile.oid,
+                adTid: info.profile.tid,
                 isMsa: false,
             }
         };

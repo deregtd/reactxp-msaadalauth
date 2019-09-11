@@ -89,7 +89,7 @@ export class MsaHelper implements AuthHelperCommon {
         }
         window.location.href = this._formMSALoginUrl(scopes, extraParams);
 
-        return SyncTasks.Defer().promise();
+        return SyncTasks.Defer<UserLoginResult>().promise();
     }
 
     private _formMSALoginUrl(scopes: string[], extraParams?: Dictionary<string>) {

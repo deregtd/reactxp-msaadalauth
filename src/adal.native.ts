@@ -61,6 +61,8 @@ export class AdalHelper implements AuthHelperCommon {
                     email: fetchResult.userInfo.userId,
                     isMsa: false,
                     anchorMailbox: fetchResult.userInfo.userId,
+                    adOid: fetchResult.userInfo.uniqueId,
+                    adTid: fetchResult.tenantId,
                     accessToken: {
                         token: fetchResult.accessToken,
                         expiresIn: fetchResult.expiresOn ? fetchResult.expiresOn.getTime() - Date.now() : 0,

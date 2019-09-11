@@ -35,6 +35,8 @@ interface FullLoginResult {
     readonly anchorMailbox: string;
     readonly accessToken?: UserAccessToken;
     readonly refreshToken?: string;
+    readonly adOid?: string;
+    readonly adTid?: string;
 }
 
 export interface UserLoginResult {
